@@ -223,13 +223,21 @@ export default function Home() {
                 {orderItems.length ? (
                   orderItems.map((item) => (
                     <div className="order-item" key={item.name}>
-                      <div>
-                        <strong>{item.name}</strong>
-                        <small>
-                          {item.kind === 'bread'
-                            ? 'Homemade loaf'
-                            : 'Coffee syrup'}
-                        </small>
+                      <div className="order-product">
+                        <Image
+                          src={`${publicBasePath}${item.image}`}
+                          alt=""
+                          width={64}
+                          height={64}
+                        />
+                        <span>
+                          <strong>{item.name}</strong>
+                          <small>
+                            {item.kind === 'bread'
+                              ? 'Homemade loaf'
+                              : 'Coffee syrup'}
+                          </small>
+                        </span>
                       </div>
                       <div
                         className="quantity-control"

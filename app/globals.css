@@ -56,7 +56,7 @@ textarea {
   color: var(--cream);
   padding: 0.58rem 1rem;
   text-align: center;
-  font-size: 0.7rem;
+  font-size: 0.76rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
@@ -91,7 +91,7 @@ textarea {
   gap: clamp(1.5rem, 3vw, 3rem);
 }
 .site-header nav a {
-  font-size: 0.7rem;
+  font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   position: relative;
@@ -116,7 +116,7 @@ textarea {
   border-bottom: 1px solid var(--espresso);
   border-radius: 0;
   color: var(--espresso);
-  font-size: 0.7rem;
+  font-size: 0.76rem;
   font-weight: 700;
   gap: 0.55rem;
   height: auto;
@@ -130,7 +130,8 @@ textarea {
   color: var(--caramel);
 }
 .order-trigger svg {
-  width: 0.9rem;
+  height: 1.05rem;
+  width: 1.05rem;
 }
 .order-count {
   align-items: center;
@@ -157,7 +158,7 @@ textarea {
 }
 .eyebrow {
   color: var(--caramel);
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   margin: 0 0 1.35rem;
@@ -195,7 +196,7 @@ h1 em {
   border: 1px solid var(--caramel);
   border-radius: 999px;
   display: inline-flex;
-  font-size: 0.69rem;
+  font-size: 0.76rem;
   font-weight: 700;
   gap: 0.5rem;
   letter-spacing: 0.11em;
@@ -205,6 +206,10 @@ h1 em {
     background 0.2s,
     color 0.2s,
     transform 0.2s;
+}
+.button svg {
+  height: 1.05rem;
+  width: 1.05rem;
 }
 .button:hover {
   transform: translateY(-2px);
@@ -305,7 +310,8 @@ h1 em {
 .trust-icon svg {
   color: var(--caramel);
   stroke-width: 1.5;
-  width: 1.15rem;
+  height: 1.4rem;
+  width: 1.4rem;
 }
 .trust-strip > div > span:last-child {
   display: flex;
@@ -313,11 +319,11 @@ h1 em {
 }
 .trust-strip strong {
   font-family: var(--font-display), serif;
-  font-size: 1rem;
+  font-size: 1.08rem;
 }
 .trust-strip small {
   color: var(--muted);
-  font-size: 0.65rem;
+  font-size: 0.76rem;
   margin-top: 0.15rem;
 }
 
@@ -360,7 +366,7 @@ h1 em {
   border: 1px solid transparent;
   border-radius: 999px;
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: 0.76rem;
   height: 2.4rem;
   letter-spacing: 0.07em;
   padding: 0 1rem;
@@ -417,7 +423,7 @@ h1 em {
 .seasonal-tag {
   backdrop-filter: blur(8px);
   border-radius: 999px;
-  font-size: 0.55rem;
+  font-size: 0.64rem;
   font-weight: 700;
   letter-spacing: 0.07em;
   padding: 0.4rem 0.58rem;
@@ -441,21 +447,21 @@ h1 em {
 }
 .product-kind {
   color: var(--caramel);
-  font-size: 0.59rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 .product-card h3 {
   font-family: var(--font-display), serif;
-  font-size: 1.65rem;
+  font-size: 1.8rem;
   letter-spacing: -0.025em;
   line-height: 1;
   margin: 0.45rem 0 0.55rem;
 }
 .product-card p {
   color: var(--muted);
-  font-size: 0.76rem;
+  font-size: 0.9rem;
   line-height: 1.5;
   margin: 0;
   min-height: 2.3rem;
@@ -470,9 +476,14 @@ h1 em {
 }
 .add-button {
   background: transparent;
-  font-size: 0.64rem;
+  font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+.add-button svg,
+.card-quantity button svg {
+  height: 1rem;
+  width: 1rem;
 }
 .add-button:hover {
   background: var(--espresso);
@@ -491,13 +502,15 @@ h1 em {
   color: var(--foam);
 }
 .card-quantity span {
-  font-size: 0.66rem;
+  font-size: 0.74rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 .card-quantity strong {
-  font-family: var(--font-display), serif;
-  font-size: 1rem;
+  font-family: var(--font-body), sans-serif;
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
   margin-right: 0.15rem;
 }
 
@@ -567,7 +580,7 @@ h1 em {
 }
 .seasonal-copy small {
   color: #f1cbb2;
-  font-size: 0.69rem;
+  font-size: 0.82rem;
   line-height: 1.5;
 }
 
@@ -618,7 +631,7 @@ h1 em {
 }
 .story-copy > p:not(.eyebrow) {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.75;
   max-width: 620px;
 }
@@ -675,7 +688,7 @@ h1 em {
 }
 .steps p {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   line-height: 1.6;
   margin: auto;
   max-width: 250px;
@@ -700,12 +713,13 @@ h1 em {
 }
 .order-sheet [data-slot='sheet-title'] {
   font-family: var(--font-display), serif;
-  font-size: 2.65rem;
+  font-size: clamp(2.8rem, 5vw, 3.25rem);
   letter-spacing: -0.04em;
   line-height: 1;
 }
 .order-sheet [data-slot='sheet-description'] {
   color: var(--muted);
+  font-size: 1rem;
   line-height: 1.55;
   margin-top: 0.55rem;
 }
@@ -725,18 +739,32 @@ h1 em {
   justify-content: space-between;
   padding: 0.9rem 0;
 }
-.order-item > div:first-child {
+.order-product {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.order-product > img {
+  border-radius: 10px;
+  flex: 0 0 auto;
+  height: 3.5rem;
+  object-fit: cover;
+  width: 3.5rem;
+}
+.order-product > span {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 .order-item strong {
   font-family: var(--font-display), serif;
-  font-size: 1.08rem;
+  font-size: 1.22rem;
   font-weight: 600;
 }
 .order-item small {
   color: var(--muted);
-  font-size: 0.59rem;
+  font-size: 0.68rem;
   letter-spacing: 0.09em;
   margin-top: 0.15rem;
   text-transform: uppercase;
@@ -746,11 +774,29 @@ h1 em {
   background: var(--cream);
   border-radius: 999px;
   display: flex;
-  padding: 0.15rem;
+  flex: 0 0 auto;
+  padding: 0.18rem;
+}
+.quantity-control button {
+  height: 2.2rem;
+  min-width: 2.2rem;
+  width: 2.2rem;
+}
+.quantity-control button svg {
+  height: 1.05rem;
+  stroke-width: 2;
+  width: 1.05rem;
 }
 .quantity-control span {
-  font-family: var(--font-display), serif;
-  min-width: 1.3rem;
+  align-items: center;
+  display: flex;
+  font-family: var(--font-body), sans-serif;
+  font-size: 1.08rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1;
+  min-width: 1.55rem;
   text-align: center;
 }
 .empty-order {
@@ -773,7 +819,7 @@ h1 em {
   margin: 1rem 0 0.4rem;
 }
 .empty-order span {
-  font-size: 0.72rem;
+  font-size: 0.82rem;
 }
 .customer-fields {
   display: grid;
@@ -788,7 +834,7 @@ h1 em {
 .customer-fields label {
   color: var(--espresso);
   display: grid;
-  font-size: 0.65rem;
+  font-size: 0.74rem;
   font-weight: 700;
   gap: 0.4rem;
   letter-spacing: 0.06em;
@@ -796,7 +842,7 @@ h1 em {
 }
 .customer-fields label span {
   color: var(--muted);
-  font-size: 0.55rem;
+  font-size: 0.64rem;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
@@ -806,7 +852,7 @@ h1 em {
   border: 1px solid var(--border);
   border-radius: 10px;
   color: var(--espresso);
-  font-size: 0.82rem;
+  font-size: 0.96rem;
   letter-spacing: 0;
   outline: none;
   padding: 0.78rem 0.85rem;
@@ -829,11 +875,15 @@ h1 em {
   background: var(--caramel);
   border-radius: 999px;
   color: var(--foam);
-  font-size: 0.66rem;
-  height: 3rem;
+  font-size: 0.74rem;
+  height: 3.25rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   width: 100%;
+}
+.submit-order svg {
+  height: 1.1rem;
+  width: 1.1rem;
 }
 .submit-order:hover {
   background: var(--espresso);
@@ -843,7 +893,7 @@ h1 em {
 }
 .order-sheet-footer > p {
   color: var(--muted);
-  font-size: 0.64rem;
+  font-size: 0.72rem;
   line-height: 1.45;
   margin: 0.7rem auto 0;
   max-width: 390px;
@@ -880,21 +930,22 @@ h1 em {
   border-radius: 50%;
   color: var(--caramel);
   display: flex;
-  height: 4.3rem;
+  height: 4.8rem;
   justify-content: center;
   margin: 0 auto 0.5rem;
-  width: 4.3rem;
+  width: 4.8rem;
 }
 .success-heart svg {
-  stroke-width: 1.6;
-  width: 1.8rem;
+  height: 2.1rem;
+  stroke-width: 2;
+  width: 2.1rem;
 }
 .success-dialog .eyebrow {
   margin: 0.4rem 0 0.6rem;
 }
 .success-dialog [data-slot='dialog-title'] {
   font-family: var(--font-display), serif;
-  font-size: 2.6rem;
+  font-size: clamp(2.75rem, 6vw, 3.35rem);
   font-weight: 600;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -902,7 +953,7 @@ h1 em {
 .success-dialog [data-slot='dialog-description'] {
   color: var(--muted);
   font-family: var(--font-display), serif;
-  font-size: 1.05rem;
+  font-size: 1.18rem;
   line-height: 1.55;
   margin: 0.4rem auto 0.6rem;
   max-width: 390px;
@@ -912,10 +963,12 @@ h1 em {
   height: auto;
   justify-content: center;
   margin: 0.4rem auto 0;
+  min-height: 3.15rem;
 }
 .success-note {
   color: var(--muted);
-  font-size: 0.62rem;
+  font-size: 0.74rem;
+  line-height: 1.45;
   margin: 0;
 }
 
@@ -1013,18 +1066,18 @@ footer {
 }
 @media (max-width: 560px) {
   .announcement {
-    font-size: 0.59rem;
+    font-size: 0.66rem;
     letter-spacing: 0.08em;
   }
   .site-header {
     padding: 0 1rem;
   }
   .order-trigger {
-    font-size: 0.57rem;
+    font-size: 0.66rem;
     gap: 0.35rem;
   }
   .order-trigger > svg {
-    display: none;
+    display: block;
   }
   h1 {
     font-size: clamp(3.45rem, 18vw, 5rem);
@@ -1063,9 +1116,10 @@ footer {
     width: 2.2rem;
   }
   .trust-strip strong {
-    font-size: 0.88rem;
+    font-size: 0.98rem;
   }
   .trust-strip small {
+    font-size: 0.72rem;
     line-height: 1.3;
   }
   .menu-section {
@@ -1124,7 +1178,20 @@ footer {
     margin-right: 1.25rem;
   }
   .success-dialog {
-    padding: 2rem 1.35rem;
+    padding: 2.35rem 1.5rem;
+  }
+  .success-dialog [data-slot='dialog-title'] {
+    font-size: 2.55rem;
+  }
+  .success-dialog [data-slot='dialog-description'] {
+    font-size: 1.08rem;
+  }
+  .order-product > img {
+    height: 3.25rem;
+    width: 3.25rem;
+  }
+  .order-item strong {
+    font-size: 1.12rem;
   }
   footer {
     grid-template-columns: 1fr;
