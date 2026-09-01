@@ -129,16 +129,19 @@ export default function Home() {
             <a className="button button-secondary" href="#story">Meet the maker</a>
           </div>
         </div>
-        <div className="hero-mark" aria-label="Loaves and Lattes logo">
-          <div className="sun-wash" />
+        <div className="hero-mark">
           <Image
-            src={`${publicBasePath}/logo.png`}
-            alt="Loaves and Lattes — homemade breads and coffee sauces"
-            width={840}
-            height={840}
+            className="hero-photo"
+            src={`${publicBasePath}/og.png`}
+            alt="Fresh pumpkin and banana breads with coffee syrups and a latte in warm morning light"
+            width={1200}
+            height={630}
             priority
           />
-          <p>from our kitchen to yours <span>♡</span></p>
+          <div className="photo-caption">
+            <span>Sunday morning, made sweeter.</span>
+            <small>Baked fresh · Poured with love ♡</small>
+          </div>
         </div>
       </section>
 

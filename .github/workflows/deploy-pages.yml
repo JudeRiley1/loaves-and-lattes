@@ -35,6 +35,12 @@ jobs:
           fi
       - run: npm install --no-audit --no-fund
       - run: npm run build
+      - name: Place assets at the GitHub Pages root
+        shell: bash
+        run: |
+          if [[ -d "dist/client/${{ github.event.repository.name }}/_next" ]]; then
+            cp -R "dist/client/${{ github.event.repository.name }}/_next" "dist/client/_next"
+          fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
