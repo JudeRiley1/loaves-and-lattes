@@ -1271,9 +1271,6 @@ footer {
   .hero-mark {
     min-height: 520px;
   }
-  .hero-photo {
-    transform: scale(1.5);
-  }
   .trust-strip {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1322,9 +1319,6 @@ footer {
   }
   .hero-mark {
     min-height: 410px;
-  }
-  .hero-photo {
-    transform: scale(1.28);
   }
   .trust-wrap {
     padding: 1rem 0.75rem 0;

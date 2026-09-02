@@ -459,7 +459,7 @@ export default function Home() {
                   type="submit"
                   disabled={!orderItems.length || submitting}
                 >
-                  {submitting ? <LoaderCircle className="spin" /> : <Heart />}
+                  {submitting && <LoaderCircle className="spin" />}
                   {submitting
                     ? 'Sending your request...'
                     : `Send order request · ${itemCount} ${itemCount === 1 ? 'item' : 'items'}`}
@@ -496,14 +496,20 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-mark">
-          <Image
-            className="hero-photo"
-            src={`${publicBasePath}/og.png`}
-            alt="Fresh pumpkin and banana breads with coffee syrups and a latte in warm morning light"
-            width={1200}
-            height={630}
-            priority
-          />
+          <picture>
+            <source
+              media="(max-width: 900px)"
+              srcSet={`${publicBasePath}/hero-mobile-clean.webp`}
+            />
+            <Image
+              className="hero-photo"
+              src={`${publicBasePath}/og.png`}
+              alt="Fresh pumpkin and banana breads with coffee syrups and a latte in warm morning light"
+              width={1200}
+              height={630}
+              priority
+            />
+          </picture>
           <div className="photo-caption">
             <span>Sunday morning, made sweeter.</span>
             <small>Baked fresh · Poured with love ♡</small>
