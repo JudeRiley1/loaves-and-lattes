@@ -34,9 +34,11 @@ import {
 
 type Product = {
   name: string;
-  kind: 'bread' | 'syrup';
+  kind: 'bread' | 'syrup' | 'bundle';
   note: string;
   image: string;
+  bundleImages?: readonly [string, string];
+  includes?: string;
   seasonal?: boolean;
   availableAddIns?: readonly AddIn[];
 };
@@ -51,6 +53,48 @@ const breadAddIns = [
 type AddIn = (typeof breadAddIns)[number];
 
 const products: Product[] = [
+  {
+    name: 'Pumpkin Vanilla Morning',
+    kind: 'bundle',
+    includes: 'Pumpkin Bread + Vanilla Syrup',
+    note: 'Warm spice and smooth vanilla make an easy cozy classic.',
+    image: '/products/pumpkin-bread.webp',
+    bundleImages: [
+      '/products/pumpkin-bread.webp',
+      '/products/vanilla-syrup.webp',
+    ],
+    availableAddIns: breadAddIns,
+  },
+  {
+    name: 'Banana Caramel Comfort',
+    kind: 'bundle',
+    includes: 'Banana Bread + Caramel Syrup',
+    note: 'Tender banana bread meets a buttery caramel coffee pour.',
+    image: '/products/banana-bread.webp',
+    bundleImages: [
+      '/products/banana-bread.webp',
+      '/products/caramel-syrup.webp',
+    ],
+    availableAddIns: breadAddIns,
+  },
+  {
+    name: 'Lemon Vanilla Bright',
+    kind: 'bundle',
+    includes: 'Lemon Loaf + Vanilla Syrup',
+    note: 'Bright citrus and soft vanilla for a lighter morning pairing.',
+    image: '/products/lemon-loaf.webp',
+    bundleImages: ['/products/lemon-loaf.webp', '/products/vanilla-syrup.webp'],
+    availableAddIns: breadAddIns,
+  },
+  {
+    name: 'Banana Mocha Treat',
+    kind: 'bundle',
+    includes: 'Banana Bread + Mocha Syrup',
+    note: 'Rich chocolate and banana make this the indulgent pick.',
+    image: '/products/banana-bread.webp',
+    bundleImages: ['/products/banana-bread.webp', '/products/mocha-syrup.webp'],
+    availableAddIns: breadAddIns,
+  },
   {
     name: 'Pumpkin Bread',
     kind: 'bread',
@@ -131,6 +175,9 @@ export default function Home() {
   const [selectedAddIns, setSelectedAddIns] = useState<Record<string, AddIn[]>>(
     {},
   );
+  const [customizingProductName, setCustomizingProductName] = useState<
+    string | null
+  >(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -138,8 +185,9 @@ export default function Home() {
 
   const visibleProducts = products.filter(
     (product) =>
-      filter === 'bundles' ||
-      (filter === 'seasonal' ? product.seasonal : product.kind === filter),
+      (filter === 'seasonal' && product.seasonal) ||
+      (filter === 'bundles' && product.kind === 'bundle') ||
+      product.kind === filter,
   );
   const orderItems = useMemo(
     () =>
@@ -155,6 +203,9 @@ export default function Home() {
   const itemCount = orderItems.reduce(
     (total, item) => total + item.quantity,
     0,
+  );
+  const customizingProduct = products.find(
+    (product) => product.name === customizingProductName,
   );
 
   const changeQuantity = (name: string, amount: number) => {
@@ -208,7 +259,7 @@ export default function Home() {
           'Order request': orderItems
             .map((item) => {
               const addInDetails =
-                item.kind === 'bread'
+                item.kind !== 'syrup'
                   ? ` — Add-ins: ${
                       item.selectedAddIns.length
                         ? item.selectedAddIns.join(', ')
@@ -286,7 +337,9 @@ export default function Home() {
                             <small>
                               {item.kind === 'bread'
                                 ? 'Homemade loaf'
-                                : 'Coffee syrup'}
+                                : item.kind === 'syrup'
+                                  ? 'Coffee syrup'
+                                  : 'Curated bundle'}
                             </small>
                           </span>
                         </div>
@@ -316,31 +369,24 @@ export default function Home() {
                         </div>
                       </div>
                       {item.availableAddIns && (
-                        <fieldset className="add-in-picker compact">
-                          <legend>
-                            <span className="add-in-label">
-                              Add-ins <small>optional</small>
-                            </span>
-                          </legend>
-                          <div className="add-in-options">
-                            {item.availableAddIns.map((addIn) => {
-                              const isSelected =
-                                item.selectedAddIns.includes(addIn);
-                              return (
-                                <button
-                                  type="button"
-                                  key={addIn}
-                                  className={isSelected ? 'selected' : ''}
-                                  aria-pressed={isSelected}
-                                  onClick={() => toggleAddIn(item.name, addIn)}
-                                >
-                                  {isSelected && <Check aria-hidden="true" />}
-                                  {addIn}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </fieldset>
+                        <button
+                          type="button"
+                          className="customize-trigger compact"
+                          onClick={() => setCustomizingProductName(item.name)}
+                        >
+                          <span className="customize-icon">
+                            <Sparkles aria-hidden="true" />
+                          </span>
+                          <span className="customize-copy">
+                            <strong>Edit add-ins</strong>
+                            <small>
+                              {item.selectedAddIns.length
+                                ? item.selectedAddIns.join(', ')
+                                : 'No add-ins selected'}
+                            </small>
+                          </span>
+                          <ChevronRight aria-hidden="true" />
+                        </button>
                       )}
                     </div>
                   ))
@@ -535,15 +581,35 @@ export default function Home() {
           {visibleProducts.map((product) => {
             const quantity = order[product.name] ?? 0;
             return (
-              <article className="product-card" key={product.name}>
+              <article
+                className={
+                  product.kind === 'bundle'
+                    ? 'product-card bundle-card'
+                    : 'product-card'
+                }
+                key={product.name}
+              >
                 <div className="product-image">
-                  <Image
-                    src={`${publicBasePath}${product.image}`}
-                    alt={`Example serving of ${product.name}`}
-                    width={700}
-                    height={700}
-                  />
-                  <span className="example-label">Example photo</span>
+                  {product.bundleImages ? (
+                    <div className="bundle-image-grid" aria-hidden="true">
+                      {product.bundleImages.map((image) => (
+                        <Image
+                          key={image}
+                          src={`${publicBasePath}${image}`}
+                          alt=""
+                          width={350}
+                          height={700}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <Image
+                      src={`${publicBasePath}${product.image}`}
+                      alt={product.name}
+                      width={700}
+                      height={700}
+                    />
+                  )}
                   {product.seasonal && (
                     <span className="seasonal-tag">Limited season</span>
                   )}
@@ -552,37 +618,39 @@ export default function Home() {
                   <span className="product-kind">
                     {product.kind === 'bread'
                       ? 'Homemade loaf'
-                      : 'Coffee syrup'}
+                      : product.kind === 'syrup'
+                        ? 'Coffee syrup'
+                        : 'Curated bundle'}
                   </span>
                   <h3>{product.name}</h3>
+                  {product.includes && (
+                    <span className="bundle-includes">{product.includes}</span>
+                  )}
                   <p>{product.note}</p>
                   {product.availableAddIns && (
-                    <fieldset className="add-in-picker">
-                      <legend>
-                        <span className="add-in-label">
-                          Add-ins <small>optional</small>
-                        </span>
-                      </legend>
-                      <div className="add-in-options">
-                        {product.availableAddIns.map((addIn) => {
-                          const isSelected = (
-                            selectedAddIns[product.name] ?? []
-                          ).includes(addIn);
-                          return (
-                            <button
-                              type="button"
-                              key={addIn}
-                              className={isSelected ? 'selected' : ''}
-                              aria-pressed={isSelected}
-                              onClick={() => toggleAddIn(product.name, addIn)}
-                            >
-                              {isSelected && <Check aria-hidden="true" />}
-                              {addIn}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </fieldset>
+                    <button
+                      type="button"
+                      className="customize-trigger"
+                      onClick={() => setCustomizingProductName(product.name)}
+                    >
+                      <span className="customize-icon">
+                        <Sparkles aria-hidden="true" />
+                      </span>
+                      <span className="customize-copy">
+                        <strong>
+                          <span className="customize-label-full">
+                            Customize loaf
+                          </span>
+                          <span className="customize-label-short">Add-ins</span>
+                        </strong>
+                        <small>
+                          {(selectedAddIns[product.name] ?? []).length
+                            ? (selectedAddIns[product.name] ?? []).join(', ')
+                            : 'Choose optional add-ins'}
+                        </small>
+                      </span>
+                      <ChevronRight aria-hidden="true" />
+                    </button>
                   )}
                 </div>
                 {quantity === 0 ? (
@@ -591,7 +659,9 @@ export default function Home() {
                     className="add-button"
                     onClick={() => changeQuantity(product.name, 1)}
                   >
-                    <Plus /> Add to my order
+                    <Plus />
+                    <span className="add-label-full">Add to my order</span>
+                    <span className="add-label-short">Add</span>
                   </Button>
                 ) : (
                   <div className="card-quantity">
@@ -735,6 +805,51 @@ export default function Home() {
           ♡ Thank you for supporting a small business and a new mom’s dream.
         </p>
       </footer>
+
+      <Dialog
+        open={Boolean(customizingProduct)}
+        onOpenChange={(open) => {
+          if (!open) setCustomizingProductName(null);
+        }}
+      >
+        <DialogContent className="customize-dialog">
+          <DialogHeader>
+            <p className="eyebrow">A little something extra</p>
+            <DialogTitle>Make {customizingProduct?.name} yours.</DialogTitle>
+            <DialogDescription>
+              Pick any add-ins you would like. Choose one, mix a few, or keep
+              your loaf classic.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="add-in-choice-grid">
+            {customizingProduct?.availableAddIns?.map((addIn) => {
+              const isSelected = (
+                selectedAddIns[customizingProduct.name] ?? []
+              ).includes(addIn);
+              return (
+                <button
+                  type="button"
+                  key={addIn}
+                  className={isSelected ? 'selected' : ''}
+                  aria-pressed={isSelected}
+                  onClick={() => toggleAddIn(customizingProduct.name, addIn)}
+                >
+                  <span className="add-in-check">
+                    {isSelected && <Check aria-hidden="true" />}
+                  </span>
+                  <span>
+                    <strong>{addIn}</strong>
+                    <small>{isSelected ? 'Added to loaf' : 'Tap to add'}</small>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          <DialogClose render={<Button className="finish-customizing" />}>
+            Done customizing
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={successOpen} onOpenChange={setSuccessOpen}>
         <DialogContent className="success-dialog" showCloseButton={false}>

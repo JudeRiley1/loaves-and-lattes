@@ -425,10 +425,22 @@ h1 em {
   transition: transform 0.4s ease;
   width: 100%;
 }
+.bundle-image-grid {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: 100%;
+  width: 100%;
+}
+.bundle-image-grid img {
+  min-width: 0;
+}
 .product-card:hover .product-image img {
   transform: scale(1.025);
 }
-.example-label,
+.bundle-card:hover .product-image img {
+  transform: none;
+}
 .seasonal-tag {
   backdrop-filter: blur(8px);
   border-radius: 999px;
@@ -439,11 +451,6 @@ h1 em {
   position: absolute;
   text-transform: uppercase;
   top: 0.65rem;
-}
-.example-label {
-  background: rgba(255, 250, 243, 0.85);
-  color: var(--muted);
-  left: 0.65rem;
 }
 .seasonal-tag {
   background: rgba(185, 95, 45, 0.92);
@@ -468,6 +475,18 @@ h1 em {
   line-height: 1;
   margin: 0.45rem 0 0.55rem;
 }
+.bundle-card h3 {
+  min-height: 2em;
+}
+.bundle-includes {
+  color: var(--caramel);
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.035em;
+  line-height: 1.4;
+  margin: -0.12rem 0 0.5rem;
+}
 .product-card p {
   color: var(--muted);
   font-size: 0.9rem;
@@ -475,77 +494,76 @@ h1 em {
   margin: 0;
   min-height: 2.3rem;
 }
-.add-in-picker {
+.customize-trigger {
+  align-items: center;
+  background: transparent;
   border: 0;
   border-top: 1px solid rgba(75, 41, 24, 0.1);
-  margin-top: 1rem;
-  min-width: 0;
-  padding-left: 0;
-  padding-right: 0;
-  padding-top: 0.85rem;
-}
-.add-in-picker > legend {
-  padding: 0;
-  width: 100%;
-}
-.add-in-label {
-  align-items: baseline;
   color: var(--espresso);
-  display: flex;
-  font-size: 0.68rem;
-  font-weight: 800;
-  gap: 0.35rem;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.55rem;
-  text-transform: uppercase;
-}
-.add-in-label small {
-  color: var(--muted);
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-}
-.add-in-options {
-  display: grid;
-  gap: 0.4rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.add-in-options button {
-  align-items: center;
-  background: var(--cream);
-  border: 1px solid rgba(75, 41, 24, 0.12);
-  border-radius: 999px;
-  color: var(--muted);
   cursor: pointer;
   display: flex;
-  font-size: 0.67rem;
-  gap: 0.25rem;
+  gap: 0.65rem;
+  margin-top: 0.9rem;
+  padding: 0.75rem 0 0;
+  text-align: left;
+  width: 100%;
+}
+.customize-trigger:hover .customize-icon {
+  background: var(--caramel);
+  color: white;
+}
+.customize-trigger:focus-visible {
+  border-radius: 10px;
+  outline: 2px solid var(--caramel);
+  outline-offset: 3px;
+}
+.customize-icon {
+  align-items: center;
+  background: var(--oat);
+  border-radius: 50%;
+  color: var(--caramel);
+  display: flex;
+  flex: 0 0 auto;
+  height: 2rem;
   justify-content: center;
-  min-height: 2rem;
-  padding: 0.38rem 0.45rem;
   transition:
     background 0.18s,
-    border-color 0.18s,
     color 0.18s;
+  width: 2rem;
 }
-.add-in-options button:hover {
-  border-color: var(--caramel);
-  color: var(--espresso);
+.customize-icon svg {
+  height: 0.95rem;
+  stroke-width: 1.8;
+  width: 0.95rem;
 }
-.add-in-options button.selected {
-  background: var(--oat);
-  border-color: var(--caramel);
-  color: var(--espresso);
-  font-weight: 700;
+.customize-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
 }
-.add-in-options button:focus-visible {
-  outline: 2px solid var(--caramel);
-  outline-offset: 2px;
+.customize-copy strong {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-.add-in-options svg {
-  height: 0.75rem;
-  stroke-width: 2.5;
-  width: 0.75rem;
+.customize-label-short {
+  display: none;
+}
+.customize-copy small {
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1.35;
+  margin-top: 0.12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.customize-trigger > svg {
+  color: var(--caramel);
+  flex: 0 0 auto;
+  height: 1rem;
+  width: 1rem;
 }
 .add-button,
 .card-quantity {
@@ -560,6 +578,9 @@ h1 em {
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+.add-label-short {
+  display: none;
 }
 .add-button svg,
 .card-quantity button svg {
@@ -855,20 +876,14 @@ h1 em {
   margin-top: 0.15rem;
   text-transform: uppercase;
 }
-.order-item .add-in-picker {
+.order-item .customize-trigger {
   margin-top: 0.8rem;
   padding-top: 0.75rem;
   width: 100%;
 }
-.order-item .add-in-label {
-  margin-bottom: 0.45rem;
-}
-.order-item .add-in-options button {
-  background: white;
-  min-height: 1.9rem;
-}
-.order-item .add-in-options button.selected {
-  background: var(--oat);
+.order-item .customize-icon {
+  height: 1.85rem;
+  width: 1.85rem;
 }
 .quantity-control {
   align-items: center;
@@ -1016,6 +1031,114 @@ h1 em {
   }
 }
 
+.customize-dialog {
+  background: var(--foam);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 28px 80px rgba(45, 26, 16, 0.24);
+  max-width: 560px !important;
+  padding: 2.4rem;
+}
+.customize-dialog [data-slot='dialog-title'] {
+  font-family: var(--font-display), serif;
+  font-size: clamp(2.5rem, 6vw, 3.25rem);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+.customize-dialog [data-slot='dialog-description'] {
+  color: var(--muted);
+  font-family: var(--font-display), serif;
+  font-size: 1.08rem;
+  line-height: 1.5;
+  margin-top: 0.45rem;
+}
+.add-in-choice-grid {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0.8rem 0 0.5rem;
+}
+.add-in-choice-grid > button {
+  align-items: center;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--espresso);
+  cursor: pointer;
+  display: flex;
+  gap: 0.75rem;
+  min-height: 4.4rem;
+  padding: 0.8rem;
+  text-align: left;
+  transition:
+    background 0.18s,
+    border-color 0.18s,
+    box-shadow 0.18s,
+    transform 0.18s;
+}
+.add-in-choice-grid > button:hover {
+  border-color: var(--caramel);
+  box-shadow: 0 7px 18px rgba(75, 41, 24, 0.07);
+  transform: translateY(-1px);
+}
+.add-in-choice-grid > button:focus-visible {
+  outline: 2px solid var(--caramel);
+  outline-offset: 2px;
+}
+.add-in-choice-grid > button.selected {
+  background: var(--oat);
+  border-color: var(--caramel);
+}
+.add-in-check {
+  align-items: center;
+  background: var(--cream);
+  border: 1px solid rgba(75, 41, 24, 0.18);
+  border-radius: 7px;
+  color: white;
+  display: flex;
+  flex: 0 0 auto;
+  height: 1.65rem;
+  justify-content: center;
+  width: 1.65rem;
+}
+.selected .add-in-check {
+  background: var(--caramel);
+  border-color: var(--caramel);
+}
+.add-in-check svg {
+  height: 0.95rem;
+  stroke-width: 2.5;
+  width: 0.95rem;
+}
+.add-in-choice-grid > button > span:last-child {
+  display: flex;
+  flex-direction: column;
+}
+.add-in-choice-grid strong {
+  font-family: var(--font-display), serif;
+  font-size: 1.08rem;
+  font-weight: 600;
+}
+.add-in-choice-grid small {
+  color: var(--muted);
+  font-size: 0.68rem;
+  margin-top: 0.12rem;
+}
+.finish-customizing {
+  background: var(--espresso);
+  border-radius: 999px;
+  color: var(--foam);
+  font-size: 0.72rem;
+  height: 3.1rem;
+  letter-spacing: 0.08em;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  width: 100%;
+}
+.finish-customizing:hover {
+  background: var(--caramel);
+}
+
 .success-dialog {
   background: var(--foam);
   border: 1px solid var(--border);
@@ -1148,6 +1271,9 @@ footer {
   .hero-mark {
     min-height: 520px;
   }
+  .hero-photo {
+    transform: scale(1.5);
+  }
   .trust-strip {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1197,6 +1323,9 @@ footer {
   .hero-mark {
     min-height: 410px;
   }
+  .hero-photo {
+    transform: scale(1.28);
+  }
   .trust-wrap {
     padding: 1rem 0.75rem 0;
   }
@@ -1228,16 +1357,132 @@ footer {
     padding-right: 1rem;
   }
   .filters {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 0.35rem;
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    padding-bottom: 0;
   }
   .filter-button {
-    flex: 0 0 auto;
+    font-size: 0.64rem;
+    height: 2.55rem;
+    padding: 0 0.45rem;
+    width: 100%;
   }
   .product-grid {
-    grid-template-columns: 1fr;
+    gap: 0.7rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .product-card {
+    border-radius: 16px;
+    padding: 0.45rem;
+  }
+  .product-card:hover {
+    transform: none;
+  }
+  .product-image {
+    border-radius: 11px;
+  }
+  .seasonal-tag {
+    font-size: 0.5rem;
+    padding: 0.3rem 0.4rem;
+    right: 0.4rem;
+    top: 0.4rem;
+  }
+  .product-copy {
+    padding: 0.72rem 0.32rem 0.55rem;
+  }
+  .product-kind {
+    font-size: 0.53rem;
+    letter-spacing: 0.09em;
+  }
+  .product-card h3 {
+    font-size: 1.24rem;
+    line-height: 1.05;
+    margin: 0.35rem 0 0.42rem;
+    min-height: 2.1em;
+  }
+  .bundle-card h3 {
+    min-height: 3.15em;
+  }
+  .bundle-includes {
+    display: -webkit-box;
+    font-size: 0.58rem;
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+    min-height: 2.7em;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .product-card p {
+    display: -webkit-box;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    min-height: 2.7em;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .customize-trigger {
+    gap: 0.4rem;
+    margin-top: 0.55rem;
+    padding-top: 0.55rem;
+  }
+  .customize-icon {
+    height: 1.65rem;
+    width: 1.65rem;
+  }
+  .customize-icon svg {
+    height: 0.8rem;
+    width: 0.8rem;
+  }
+  .customize-copy strong {
+    font-size: 0.58rem;
+    letter-spacing: 0.045em;
+  }
+  .customize-label-full {
+    display: none;
+  }
+  .customize-label-short {
+    display: inline;
+  }
+  .customize-copy small {
+    font-size: 0.56rem;
+  }
+  .customize-trigger > svg {
+    display: none;
+  }
+  .add-button,
+  .card-quantity {
+    height: 2.4rem;
+  }
+  .add-button {
+    background: var(--espresso);
+    border-color: var(--espresso);
+    color: var(--foam);
+    font-size: 0.64rem;
+  }
+  .add-label-full {
+    display: none;
+  }
+  .add-label-short {
+    display: inline;
+  }
+  .card-quantity {
+    padding: 0.12rem 0.2rem;
+  }
+  .card-quantity button {
+    height: 1.9rem;
+    min-width: 1.9rem;
+    width: 1.9rem;
+  }
+  .card-quantity span {
+    font-size: 0;
+  }
+  .card-quantity strong {
+    font-size: 0.95rem;
+    margin: 0;
   }
   .seasonal-feature,
   .story-section {
@@ -1280,6 +1525,12 @@ footer {
   }
   .success-dialog {
     padding: 2.35rem 1.5rem;
+  }
+  .customize-dialog {
+    padding: 2.35rem 1.35rem 1.5rem;
+  }
+  .add-in-choice-grid {
+    grid-template-columns: 1fr;
   }
   .success-dialog [data-slot='dialog-title'] {
     font-size: 2.55rem;
