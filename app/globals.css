@@ -360,11 +360,16 @@ h1 em {
   max-width: 620px;
 }
 .filters {
+  border: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
   justify-content: center;
   margin-bottom: 2rem;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0;
+  width: 100%;
 }
 .filter-button {
   border: 1px solid transparent;
@@ -469,6 +474,78 @@ h1 em {
   line-height: 1.5;
   margin: 0;
   min-height: 2.3rem;
+}
+.add-in-picker {
+  border: 0;
+  border-top: 1px solid rgba(75, 41, 24, 0.1);
+  margin-top: 1rem;
+  min-width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0.85rem;
+}
+.add-in-picker > legend {
+  padding: 0;
+  width: 100%;
+}
+.add-in-label {
+  align-items: baseline;
+  color: var(--espresso);
+  display: flex;
+  font-size: 0.68rem;
+  font-weight: 800;
+  gap: 0.35rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.55rem;
+  text-transform: uppercase;
+}
+.add-in-label small {
+  color: var(--muted);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.add-in-options {
+  display: grid;
+  gap: 0.4rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.add-in-options button {
+  align-items: center;
+  background: var(--cream);
+  border: 1px solid rgba(75, 41, 24, 0.12);
+  border-radius: 999px;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  font-size: 0.67rem;
+  gap: 0.25rem;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.38rem 0.45rem;
+  transition:
+    background 0.18s,
+    border-color 0.18s,
+    color 0.18s;
+}
+.add-in-options button:hover {
+  border-color: var(--caramel);
+  color: var(--espresso);
+}
+.add-in-options button.selected {
+  background: var(--oat);
+  border-color: var(--caramel);
+  color: var(--espresso);
+  font-weight: 700;
+}
+.add-in-options button:focus-visible {
+  outline: 2px solid var(--caramel);
+  outline-offset: 2px;
+}
+.add-in-options svg {
+  height: 0.75rem;
+  stroke-width: 2.5;
+  width: 0.75rem;
 }
 .add-button,
 .card-quantity {
@@ -737,11 +814,16 @@ h1 em {
   margin: 1rem 2rem 0;
 }
 .order-item {
-  align-items: center;
   border-bottom: 1px solid var(--border);
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 0.9rem 0;
+}
+.order-item-top {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 .order-product {
   align-items: center;
@@ -772,6 +854,21 @@ h1 em {
   letter-spacing: 0.09em;
   margin-top: 0.15rem;
   text-transform: uppercase;
+}
+.order-item .add-in-picker {
+  margin-top: 0.8rem;
+  padding-top: 0.75rem;
+  width: 100%;
+}
+.order-item .add-in-label {
+  margin-bottom: 0.45rem;
+}
+.order-item .add-in-options button {
+  background: white;
+  min-height: 1.9rem;
+}
+.order-item .add-in-options button.selected {
+  background: var(--oat);
 }
 .quantity-control {
   align-items: center;

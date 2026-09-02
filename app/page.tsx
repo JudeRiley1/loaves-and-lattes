@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { FormEvent, useMemo, useState } from 'react';
+import { SyntheticEvent, useMemo, useState } from 'react';
 import {
   Check,
   ChevronRight,
@@ -38,7 +38,17 @@ type Product = {
   note: string;
   image: string;
   seasonal?: boolean;
+  availableAddIns?: readonly AddIn[];
 };
+
+const breadAddIns = [
+  'Chocolate chips',
+  'Blueberries',
+  'Walnuts',
+  'Pecans',
+] as const;
+
+type AddIn = (typeof breadAddIns)[number];
 
 const products: Product[] = [
   {
@@ -46,12 +56,21 @@ const products: Product[] = [
     kind: 'bread',
     note: 'Soft, spiced, and made for cozy mornings.',
     image: '/products/pumpkin-bread.webp',
+    availableAddIns: breadAddIns,
   },
   {
     name: 'Banana Bread',
     kind: 'bread',
     note: 'A familiar favorite with a tender crumb.',
     image: '/products/banana-bread.webp',
+    availableAddIns: breadAddIns,
+  },
+  {
+    name: 'Lemon Loaf',
+    kind: 'bread',
+    note: 'Bright, tender, and finished with a delicate lemon glaze.',
+    image: '/products/lemon-loaf.webp',
+    availableAddIns: breadAddIns,
   },
   {
     name: 'Caramel Syrup',
@@ -94,7 +113,7 @@ const products: Product[] = [
 ];
 
 const filters = [
-  { value: 'all', label: 'Everything' },
+  { value: 'bundles', label: 'Bundles' },
   { value: 'bread', label: 'Homemade breads' },
   { value: 'syrup', label: 'Coffee syrups' },
   { value: 'seasonal', label: 'Seasonal' },
@@ -107,8 +126,11 @@ const formspreeEndpoint =
 
 export default function Home() {
   const [filter, setFilter] =
-    useState<(typeof filters)[number]['value']>('all');
+    useState<(typeof filters)[number]['value']>('bundles');
   const [order, setOrder] = useState<Record<string, number>>({});
+  const [selectedAddIns, setSelectedAddIns] = useState<Record<string, AddIn[]>>(
+    {},
+  );
   const [sheetOpen, setSheetOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -116,15 +138,19 @@ export default function Home() {
 
   const visibleProducts = products.filter(
     (product) =>
-      filter === 'all' ||
+      filter === 'bundles' ||
       (filter === 'seasonal' ? product.seasonal : product.kind === filter),
   );
   const orderItems = useMemo(
     () =>
       products
         .filter((product) => order[product.name])
-        .map((product) => ({ ...product, quantity: order[product.name] })),
-    [order],
+        .map((product) => ({
+          ...product,
+          quantity: order[product.name],
+          selectedAddIns: selectedAddIns[product.name] ?? [],
+        })),
+    [order, selectedAddIns],
   );
   const itemCount = orderItems.reduce(
     (total, item) => total + item.quantity,
@@ -142,7 +168,19 @@ export default function Home() {
     });
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const toggleAddIn = (productName: string, addIn: AddIn) => {
+    setSubmitError('');
+    setSelectedAddIns((current) => {
+      const productAddIns = current[productName] ?? [];
+      const nextProductAddIns = productAddIns.includes(addIn)
+        ? productAddIns.filter((item) => item !== addIn)
+        : [...productAddIns, addIn];
+
+      return { ...current, [productName]: nextProductAddIns };
+    });
+  };
+
+  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!orderItems.length) return;
     if (!formspreeEndpoint) {
@@ -168,7 +206,17 @@ export default function Home() {
           'Phone number': formData.get('phone') || 'Not provided',
           'Preferred pickup': formData.get('pickup'),
           'Order request': orderItems
-            .map((item) => `${item.quantity} x ${item.name}`)
+            .map((item) => {
+              const addInDetails =
+                item.kind === 'bread'
+                  ? ` — Add-ins: ${
+                      item.selectedAddIns.length
+                        ? item.selectedAddIns.join(', ')
+                        : 'None'
+                    }`
+                  : '';
+              return `${item.quantity} x ${item.name}${addInDetails}`;
+            })
             .join('\n'),
           'Total items': itemCount,
           Notes: formData.get('notes') || 'No additional notes',
@@ -177,6 +225,7 @@ export default function Home() {
       if (!response.ok) throw new Error('Submission failed');
       form.reset();
       setOrder({});
+      setSelectedAddIns({});
       setSheetOpen(false);
       setSuccessOpen(true);
     } catch {
@@ -214,8 +263,9 @@ export default function Home() {
               <p className="eyebrow">A little something sweet</p>
               <SheetTitle>Your order request</SheetTitle>
               <SheetDescription>
-                Choose quantities and share your details. We will follow up to
-                confirm availability, pickup, and your total.
+                Choose quantities, customize your loaves, and share your
+                details. We will follow up to confirm availability, pickup, and
+                your total.
               </SheetDescription>
             </SheetHeader>
             <form className="checkout-form" onSubmit={handleSubmit}>
@@ -223,46 +273,75 @@ export default function Home() {
                 {orderItems.length ? (
                   orderItems.map((item) => (
                     <div className="order-item" key={item.name}>
-                      <div className="order-product">
-                        <Image
-                          src={`${publicBasePath}${item.image}`}
-                          alt=""
-                          width={64}
-                          height={64}
-                        />
-                        <span>
-                          <strong>{item.name}</strong>
-                          <small>
-                            {item.kind === 'bread'
-                              ? 'Homemade loaf'
-                              : 'Coffee syrup'}
-                          </small>
-                        </span>
-                      </div>
-                      <div
-                        className="quantity-control"
-                        aria-label={`${item.name} quantity`}
-                      >
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon-sm"
-                          onClick={() => changeQuantity(item.name, -1)}
-                          aria-label={`Remove one ${item.name}`}
+                      <div className="order-item-top">
+                        <div className="order-product">
+                          <Image
+                            src={`${publicBasePath}${item.image}`}
+                            alt=""
+                            width={64}
+                            height={64}
+                          />
+                          <span>
+                            <strong>{item.name}</strong>
+                            <small>
+                              {item.kind === 'bread'
+                                ? 'Homemade loaf'
+                                : 'Coffee syrup'}
+                            </small>
+                          </span>
+                        </div>
+                        <div
+                          className="quantity-control"
+                          aria-label={`${item.name} quantity`}
                         >
-                          <Minus />
-                        </Button>
-                        <span>{item.quantity}</span>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon-sm"
-                          onClick={() => changeQuantity(item.name, 1)}
-                          aria-label={`Add one ${item.name}`}
-                        >
-                          <Plus />
-                        </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon-sm"
+                            onClick={() => changeQuantity(item.name, -1)}
+                            aria-label={`Remove one ${item.name}`}
+                          >
+                            <Minus />
+                          </Button>
+                          <span>{item.quantity}</span>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon-sm"
+                            onClick={() => changeQuantity(item.name, 1)}
+                            aria-label={`Add one ${item.name}`}
+                          >
+                            <Plus />
+                          </Button>
+                        </div>
                       </div>
+                      {item.availableAddIns && (
+                        <fieldset className="add-in-picker compact">
+                          <legend>
+                            <span className="add-in-label">
+                              Add-ins <small>optional</small>
+                            </span>
+                          </legend>
+                          <div className="add-in-options">
+                            {item.availableAddIns.map((addIn) => {
+                              const isSelected =
+                                item.selectedAddIns.includes(addIn);
+                              return (
+                                <button
+                                  type="button"
+                                  key={addIn}
+                                  className={isSelected ? 'selected' : ''}
+                                  aria-pressed={isSelected}
+                                  onClick={() => toggleAddIn(item.name, addIn)}
+                                >
+                                  {isSelected && <Check aria-hidden="true" />}
+                                  {addIn}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </fieldset>
+                      )}
                     </div>
                   ))
                 ) : (
@@ -436,7 +515,8 @@ export default function Home() {
             personally confirm what is fresh, your total, and local pickup.
           </p>
         </div>
-        <div className="filters" role="group" aria-label="Filter menu items">
+        <fieldset className="filters">
+          <legend className="sr-only">Filter menu items</legend>
           {filters.map((item) => (
             <Button
               key={item.value}
@@ -450,7 +530,7 @@ export default function Home() {
               {item.label}
             </Button>
           ))}
-        </div>
+        </fieldset>
         <div className="product-grid">
           {visibleProducts.map((product) => {
             const quantity = order[product.name] ?? 0;
@@ -476,6 +556,34 @@ export default function Home() {
                   </span>
                   <h3>{product.name}</h3>
                   <p>{product.note}</p>
+                  {product.availableAddIns && (
+                    <fieldset className="add-in-picker">
+                      <legend>
+                        <span className="add-in-label">
+                          Add-ins <small>optional</small>
+                        </span>
+                      </legend>
+                      <div className="add-in-options">
+                        {product.availableAddIns.map((addIn) => {
+                          const isSelected = (
+                            selectedAddIns[product.name] ?? []
+                          ).includes(addIn);
+                          return (
+                            <button
+                              type="button"
+                              key={addIn}
+                              className={isSelected ? 'selected' : ''}
+                              aria-pressed={isSelected}
+                              onClick={() => toggleAddIn(product.name, addIn)}
+                            >
+                              {isSelected && <Check aria-hidden="true" />}
+                              {addIn}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </fieldset>
+                  )}
                 </div>
                 {quantity === 0 ? (
                   <Button
@@ -586,7 +694,7 @@ export default function Home() {
           <div>
             <span>01</span>
             <h3>Choose your favorites</h3>
-            <p>Add loaves and syrups, then adjust each quantity.</p>
+            <p>Customize your loaves, add syrups, then adjust quantities.</p>
           </div>
           <div>
             <span>02</span>
