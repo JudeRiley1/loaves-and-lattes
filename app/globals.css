@@ -703,6 +703,9 @@ h1 em {
   object-fit: cover;
   width: 100%;
 }
+.founder-photo {
+  object-position: center 32%;
+}
 .story-seal {
   align-items: center;
   background: rgba(255, 250, 243, 0.93);

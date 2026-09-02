@@ -729,11 +729,11 @@ export default function Home() {
       <section className="story-section" id="story">
         <div className="story-mark">
           <Image
-            className="story-photo"
-            src={`${publicBasePath}/products/banana-bread.webp`}
-            alt="Example loaf of homemade banana bread on a warm kitchen table"
-            width={900}
-            height={900}
+            className="story-photo founder-photo"
+            src={`${publicBasePath}/founder-portrait.webp`}
+            alt="Founder of Loaves and Lattes"
+            width={1122}
+            height={1402}
           />
           <div className="story-seal">
             <Image
